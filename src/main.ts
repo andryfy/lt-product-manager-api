@@ -5,11 +5,20 @@ import cors from 'cors';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
-import { METHODS } from 'http';
-import { CREDENTIALS, LOG_FORMAT, NODE_ENV, ORIGIN, PORT } from '@config';
+import csurf from 'csurf';
+import {
+  CREDENTIALS,
+  LOG_FORMAT,
+  METHODS,
+  NODE_ENV,
+  ORIGIN,
+  PORT,
+} from '@config';
 import { ValidationPipe } from '@nestjs/common';
+import envalid from './utils/envalid';
 
 async function bootstrap() {
+  envalid();
   const app = await NestFactory.create(AppModule);
   const env = NODE_ENV || 'development';
   const port = PORT || 3000;
@@ -18,6 +27,8 @@ async function bootstrap() {
   app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS, methods: METHODS }));
   app.use(hpp());
   app.use(helmet());
+  app.enableCors();
+  app.use(csurf());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   app.setGlobalPrefix('api/v1'); // Adds prefix
