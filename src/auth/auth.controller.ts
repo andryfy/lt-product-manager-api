@@ -1,6 +1,8 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { IAuth } from '@app/interfaces/auth.interface';
+import { IResponse } from '@app/interfaces/response.interface';
+import { User } from '@app/user/entities/user.entity';
+import { ICredential } from '@app/interfaces/auth.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -8,13 +10,27 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() userData: IAuth) {
-    return this.authService.signIn(userData);
+  async signIn(@Body() userData: ICredential): Promise<IResponse> {
+    const data: {
+      token: string;
+    } = await this.authService.signIn(userData);
+
+    return {
+      success: true,
+      message: 'Logged In',
+      data: data,
+    };
   }
 
   @HttpCode(HttpStatus.OK)
   @Post('register')
-  signUp(@Body() userData: IAuth) {
-    return this.authService.signUp(userData);
+  async signUp(@Body() userData: ICredential): Promise<IResponse> {
+    const data: User = await this.authService.signUp(userData);
+
+    return {
+      success: true,
+      message: 'Logged Up',
+      data: data,
+    };
   }
 }

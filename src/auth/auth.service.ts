@@ -1,4 +1,4 @@
-import { IAuth } from '@app/interfaces/auth.interface';
+import { ICredential } from '@app/interfaces/auth.interface';
 import { User } from '@app/user/entities/user.entity';
 import { UserService } from '@app/user/user.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
@@ -12,7 +12,7 @@ export class AuthService {
     private userService: UserService,
   ) {}
 
-  async signIn(userData: IAuth): Promise<{ token: string }> {
+  async signIn(userData: ICredential): Promise<{ token: string }> {
     const user = await this.userService.findOneByUsername(userData.username);
 
     if (!user) throw new UnauthorizedException();
@@ -29,7 +29,7 @@ export class AuthService {
     };
   }
 
-  async signUp(userData: IAuth): Promise<User> {
+  async signUp(userData: ICredential): Promise<User> {
     return this.userService.create(userData);
   }
 }

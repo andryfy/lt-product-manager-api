@@ -5,7 +5,6 @@ import cors from 'cors';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
-import csurf from 'csurf';
 import {
   CREDENTIALS,
   LOG_FORMAT,
@@ -28,7 +27,6 @@ async function bootstrap() {
   app.use(hpp());
   app.use(helmet());
   app.enableCors();
-  app.use(csurf());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   app.setGlobalPrefix('api/v1'); // Adds prefix

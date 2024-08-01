@@ -3,6 +3,7 @@ config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 
 export const CREDENTIALS = process.env.CREDENTIALS === 'true';
 export const SALT = Number(process.env.SALT);
+export const JWT_EXPIRE_TIME = Number(process.env.JWT_EXPIRE_TIME);
 export const {
   NODE_ENV,
   PORT,
@@ -14,7 +15,6 @@ export const {
   ORIGIN,
   METHODS,
   JWT_SECRET_KEY,
-  JWT_EXPIRE_TIME,
   TOKEN_EXPIRE_TIME,
   TOKEN_PREFIX,
   TOKEN_HEADER_KEY,
