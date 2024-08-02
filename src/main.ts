@@ -32,7 +32,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1'); // Adds prefix
 
   const config = new DocumentBuilder()
-    .setTitle('Cats example')
+    .setTitle('Product manager')
     .setDescription('The cats API description')
     .setVersion('1.0')
     .addTag('cats')
