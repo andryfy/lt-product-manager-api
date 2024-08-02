@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { Product } from './entities/product.entity';
 
 @Injectable()
@@ -17,7 +17,12 @@ export class ProductService {
     return this.userRepository.save(userData);
   }
 
-  async findAll(): Promise<Product[]> {
+  async findMany(filterOption: any = {}): Promise<Product[]> {
+    if (!!filterOption && !!filterOption['keyword']) {
+      return await this.userRepository.findBy({
+        title: ILike(`%${filterOption['keyword']}%`),
+      });
+    }
     return await this.userRepository.find();
   }
 

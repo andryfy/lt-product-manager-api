@@ -3,10 +3,11 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   UseGuards,
+  Put,
+  Query,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -40,9 +41,11 @@ export class ProductController {
 
   @UseGuards(AuthGuard)
   @Get()
-  async findAll(): Promise<IResponse> {
+  async findMany(@Query('keyword') search?: string): Promise<IResponse> {
     try {
-      const data: Product[] = await this.productService.findAll();
+      const data: Product[] = await this.productService.findMany({
+        keyword: search,
+      });
       return {
         success: true,
         data: data,
@@ -77,7 +80,7 @@ export class ProductController {
   }
 
   @UseGuards(AuthGuard)
-  @Patch(':id')
+  @Put(':id')
   async update(
     @Param('id') id: string,
     @Body() updateProductDto: UpdateProductDto,
